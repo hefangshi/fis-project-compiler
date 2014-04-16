@@ -1,0 +1,38 @@
+{
+    "name": "fis-project-analyzer",
+    "version": "0.0.15",
+    "main": "index.js",
+    "description": "A tool to compile fis-plus project",
+    "keywords": ["fis", "compiler"],
+    "scripts": {
+        "test": "make test-all"
+    },
+    "config": {
+        "blanket": {
+            "pattern": "fis-project-compiler/lib"
+        },
+        "travis-cov": {
+            "threshold": 90
+        }        
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hefangshi/fis-project-compiler.git"
+    },
+    "engines": {
+        "node": ">= 0.8.0"
+    },
+    "devDependencies": {
+        "mocha": "*",
+        "blanket": "*",
+        "travis-cov": "*",
+        "coveralls": "*",
+        "fis-plus": "*",
+        "mocha-lcov-reporter": "*"
+    },
+    "dependencies": {
+        "fis-kernel" : "1.9.0",
+        "node.svn": "*",
+        "async": "*"
+    }
+}

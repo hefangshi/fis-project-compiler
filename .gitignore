@@ -1,0 +1,15 @@
+/.idea
+node_modules/
+/test/output*
+
+.DS_Store
+*.db
+*.bak
+*.tmp
+*.cmd
+~*
+
+upload.py
+run.js
+out.log
+coverage.html
