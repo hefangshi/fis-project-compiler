@@ -17,7 +17,9 @@ describe('compiler', function() {
         it("should get project modules with projectPath", function () {
             var client = new compiler(projectPath);
             var modules = client.getModules();
-            assert.deepEqual(modules, ["common", "home"]);
+            assert.notEqual(modules.indexOf('common'), -1);
+            assert.notEqual(modules.indexOf('home'), -1);
+            assert.equal(modules.length, 2);
         });
         it("should get project modules with module path", function () {
             var client = new compiler(projectPath + '/home');
