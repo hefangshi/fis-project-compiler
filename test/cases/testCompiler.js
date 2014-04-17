@@ -8,6 +8,7 @@
 
 var assert = require("assert");
 var path = require("path");
+var fs = require('fs');
 var compiler = require('../../lib/compiler.js');
 var projectPath = __dirname + "/../testProject/src";
 var errorProjectPath = __dirname + "/../testProject/error_src";
@@ -70,6 +71,34 @@ describe('compiler', function() {
                 assert.notEqual(err,undefined);
                 done();
             });
+        });
+        it("should support beforeCompile setting", function (done) {
+            var output = path.normalize(projectPath + '/../../output/common_ext');
+            fis.util.del(output);
+            var client = new compiler(projectPath + '/common', {
+                compileCMD: bin + ' release --no-color -pd ../../../output/common_ext'
+            });
+            client.compile(
+                function(err, info){
+                    assert.equal(err,undefined);
+                    //get hash
+                    var conf = fis.util.readJSON(output+"/config/common-map.json");
+                    assert.equal(conf['res']['common:page/layout.tpl'].hash ,'0e132eb');
+                    done();
+                },function(module){
+                    var path = client.getModulePath(module);
+                    //inject fis-conf.js to add ext-map
+                    if (!fs.existsSync(path+"/fis-conf.js.bak_complier"))
+                        fs.writeFileSync(path+"/fis-conf.js.bak_complier", fs.readFileSync(path+"/fis-conf.js"));
+                    fs.appendFileSync(path+"/fis-conf.js",
+                        "\r\n;if (typeof fis.config.data.modules.postpackager == 'string') fis.config.data.modules.postpackager = [fis.config.data.modules.postpackager];" +
+                        "fis.config.data.modules.postpackager = fis.config.data.modules.postpackager || [] ;if (fis.config.data.modules.postpackager.indexOf('ext-map') == -1) fis.config.data.modules.postpackager.push('ext-map');"
+                    );
+                },function(module){
+                    var path = client.getModulePath(module);
+                    fs.writeFileSync(path+"/fis-conf.js", fs.readFileSync(path+"/fis-conf.js.bak_complier"));
+                }
+            );
         });
     });
 });
