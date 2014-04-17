@@ -89,10 +89,10 @@ describe('compiler', function() {
                 },function(module){
                     var path = client.getModulePath(module);
                     //inject fis-conf.js to add ext-map
-                    injection.apply(path+"/fis-conf.js", injection.EXT_MAP);
+                    injection.apply(path, injection.EXT_MAP);
                 },function(module){
                     var path = client.getModulePath(module);
-                    injection.revert(path+"/fis-conf.js");
+                    injection.revert(path);
                 }
             );
         });
