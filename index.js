@@ -7,3 +7,7 @@
 'use strict';
 
 var compiler = module.exports;
+
+compiler.compiler = require('./lib/compiler.js');
+
+compiler.vcs = require('./lib/vcs.js');

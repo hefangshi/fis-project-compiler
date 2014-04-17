@@ -1,6 +1,6 @@
 {
-    "name": "fis-project-analyzer",
-    "version": "0.0.15",
+    "name": "fis-project-compiler",
+    "version": "0.0.2",
     "main": "index.js",
     "description": "A tool to compile fis-plus project",
     "keywords": ["fis", "compiler"],
