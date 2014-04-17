@@ -13,6 +13,7 @@ var compiler = require('../../lib/compiler.js');
 var projectPath = __dirname + "/../testProject/src";
 var errorProjectPath = __dirname + "/../testProject/error_src";
 var bin = path.normalize(__dirname + "../../../node_modules/.bin/fisp");
+var injection = require('../../lib/injection.js');
 describe('compiler', function() {
     describe('#getModules()', function () {
         it("should get project modules with projectPath", function () {
@@ -45,7 +46,7 @@ describe('compiler', function() {
             var client = new compiler(projectPath, {
                 compileCMD: bin + ' release --no-color -pd ../../../output/all'
             });
-            client.compile(function(err, info){
+            client.compile(function(err){
                 assert.equal(err,undefined);
                 done();
             });
@@ -56,7 +57,7 @@ describe('compiler', function() {
             var client = new compiler(projectPath + '/common', {
                 compileCMD: bin + ' release --no-color -pd ../../../output/common'
             });
-            client.compile(function(err, info){
+            client.compile(function(err){
                 assert.equal(err,undefined);
                 done();
             });
@@ -67,7 +68,7 @@ describe('compiler', function() {
             var client = new compiler(errorProjectPath, {
                 compileCMD: bin + ' release --no-color -pd ../../../output/err'
             });
-            client.compile(function(err, info){
+            client.compile(function(err){
                 assert.notEqual(err,undefined);
                 done();
             });
@@ -79,7 +80,7 @@ describe('compiler', function() {
                 compileCMD: bin + ' release --no-color -pd ../../../output/common_ext'
             });
             client.compile(
-                function(err, info){
+                function(err){
                     assert.equal(err,undefined);
                     //get hash
                     var conf = fis.util.readJSON(output+"/config/common-map.json");
@@ -88,15 +89,10 @@ describe('compiler', function() {
                 },function(module){
                     var path = client.getModulePath(module);
                     //inject fis-conf.js to add ext-map
-                    if (!fs.existsSync(path+"/fis-conf.js.bak_complier"))
-                        fs.writeFileSync(path+"/fis-conf.js.bak_complier", fs.readFileSync(path+"/fis-conf.js"));
-                    fs.appendFileSync(path+"/fis-conf.js",
-                        "\r\n;if (typeof fis.config.data.modules.postpackager == 'string') fis.config.data.modules.postpackager = [fis.config.data.modules.postpackager];" +
-                        "fis.config.data.modules.postpackager = fis.config.data.modules.postpackager || [] ;if (fis.config.data.modules.postpackager.indexOf('ext-map') == -1) fis.config.data.modules.postpackager.push('ext-map');"
-                    );
+                    injection.apply(path+"/fis-conf.js", injection.EXT_MAP);
                 },function(module){
                     var path = client.getModulePath(module);
-                    fs.writeFileSync(path+"/fis-conf.js", fs.readFileSync(path+"/fis-conf.js.bak_complier"));
+                    injection.revert(path+"/fis-conf.js");
                 }
             );
         });
