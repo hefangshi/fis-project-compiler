@@ -76,7 +76,7 @@ describe('compiler', function() {
         it("should support beforeCompile setting", function (done) {
             var output = path.normalize(projectPath + '/../../output/common_ext');
             fis.util.del(output);
-            var client = new compiler(projectPath + '/common', {
+            var client = new compiler(projectPath + '/common-new', {
                 compileCMD: bin + ' release --no-color -pd ../../../output/common_ext'
             });
             client.compile(
