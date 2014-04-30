@@ -20,7 +20,7 @@
         "url": "https://github.com/hefangshi/fis-project-compiler.git"
     },
     "engines": {
-        "node": ">= 0.8.0"
+        "node": ">= 0.10.0"
     },
     "devDependencies": {
         "mocha": "*",
