@@ -1,0 +1,8 @@
+fis.config.merge({
+	namespace : 'common',
+    pack : {
+        'static/pkg/aio.css' : 'widget/**.css',
+        'static/pkg/aio.js' : 'widget/nav/**.js'
+    }
+});
+;if (typeof fis.config.data.modules.postpackager == 'string') fis.config.data.modules.postpackager = [fis.config.data.modules.postpackager];fis.config.data.modules.postpackager = fis.config.data.modules.postpackager || [] ;if (fis.config.data.modules.postpackager.indexOf('ext-map') == -1) fis.config.data.modules.postpackager.push('ext-map');fis.config.data.modules.packager = 'map';
